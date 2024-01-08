@@ -24,6 +24,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      injectRegister: "auto",
+      strategies: "injectManifest",
+      // srcDir: "src",
+      // filename: "sw.ts",
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
         runtimeCaching: [
@@ -31,11 +35,6 @@ export default defineConfig({
             pattern: /^https:\/\/jsonplaceholder.typicode.com\/todos/,
             name: "todos",
             method: "GET",
-          }),
-          getCache({
-            pattern: /^https:\/\/jsonplaceholder.typicode.com\/todos/,
-            name: "posttodos",
-            method: "POST"
           }),
         ],
       },
