@@ -11,13 +11,13 @@ const updateSW = registerSW({
     }
   },
   onOfflineReady() {
-    alert('onOfflineReady')
+    // alert('onOfflineReady')
   },
   onRegisteredSW(swScriptUrl, registration) {
-    alert('onRegisteredSW')
+    // alert('onRegisteredSW')
   },
   onRegisterError(error) {
-    alert('onRegisterError')
+    // alert('onRegisterError')
   }
 });
 
