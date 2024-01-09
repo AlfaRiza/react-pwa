@@ -2,12 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import useDataStore from "./store";
 import { DataInterface } from "./store/interface";
 
-// interface DataInterface {
-//   completed: boolean;
-//   id: number;
-//   title: string;
-//   userId: number;
-// }
 function App() {
   const {
     data,
@@ -22,10 +16,6 @@ function App() {
       deferredPrompt = e;
     });
     getData();
-
-    // console.log("navigator.onLine", navigator.onLine);
-
-    // return clean()
   }, []);
 
   const [isOnline, set_isOnline] = useState(true);
@@ -64,7 +54,7 @@ function App() {
 
     addData({
       id: result,
-      title: `data${result}`
+      title: `${result}`
     })
   }
 
@@ -73,13 +63,13 @@ function App() {
       <button onClick={() => postData()}>send data</button>
       {String(isOnline)}
 
-      {queue && (
+      <p>Queue: </p>{queue && (
         <>
           <p>{queue.length}</p>
           <ul>
             {
               queue.map((item: DataInterface) => {
-                return <li>{item.id}</li>;
+                return <li>{item.title}</li>;
               })
             }
           </ul>
@@ -110,7 +100,7 @@ function App() {
             // </p>
             <tr key={i}>
               <td className="border">{i + 1}</td>
-              <td className="border">{item.title}</td>
+              <td className="border">{item.title || item.id}</td>
             </tr>
           ))}
         </tbody>

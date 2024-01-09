@@ -15,33 +15,57 @@ const useDataStore = create<UseDataStoreInterface, []>(
         set(() => ({ data }));
       },
       getData: async () => {
-        let res = await (await fetch("http://localhost:3000/data/")).json();
+        let res = await (
+          await fetch(
+            `https://cors-hijacker.vercel.app/api?url=${encodeURIComponent(
+              `${import.meta.env.VITE_API_URL}/data/`
+            )}`,
+            {
+              headers: {
+                "Content-Type": "text/html",
+              },
+            }
+          )
+        ).json();
+        // `${(import.meta.env.VITE_API_URL)}/data/`
         if (res != undefined) {
           get().setData(res as Array<DataInterface>);
         }
       },
       addData: async (data: DataInterface) => {
-        await fetch("http://localhost:3000/data", {
-          method: "POST",
-          body: JSON.stringify(data),
-        })
+        await fetch(
+          `https://cors-hijacker.vercel.app/api?url=${encodeURIComponent(
+            `${import.meta.env.VITE_API_URL}/data/`
+          )}`,
+          {
+            headers: {
+              "Content-Type": "text/html",
+            },
+            mode: "cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: "same-origin", // include, *same-origin, omit
+            redirect: "follow", // manual, *follow, error
+            referrerPolicy: "no-referrer",
+            method: "POST",
+            body: JSON.stringify({
+              id: data.id,
+              title: data.title
+            }),
+          }
+        )
           .then(() => {
             alert("success");
-            const queue = get().queue
+            const queue = get().queue;
             if (queue.length > 0) {
-              const findData = queue.filter((item) => item.id !== data.id)
+              const findData = queue.filter((item) => item.id !== data.id);
 
-              get().setQueue(findData)
+              get().setQueue(findData);
             }
             get().getData();
           })
           .catch((e: any) => {
-            console.log("=====", e.message);
             alert("error");
-            get().setQueue([
-              ...get().queue,
-              data,
-            ])
+            get().setQueue([...get().queue, data]);
           });
       },
       setQueue: (queue: Array<DataInterface>) => {
@@ -49,7 +73,6 @@ const useDataStore = create<UseDataStoreInterface, []>(
       },
       clean: () => {
         get().setData([]);
-        console.log(get().data);
       },
     }),
     {
